@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
+import com.book.constants.BookConstants;
 import com.book.entity.Author;
 import com.book.entity.Book;
 import com.book.service.AuthorService;
 import com.book.service.BookService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/digitalbooks")
 public class BookController extends BaseController {
+
 	@Autowired
 	BookService bookService;
 	
@@ -67,6 +67,8 @@ public class BookController extends BaseController {
 			bookService.saveBook(book);
 			int bookId = book.getBookId();
 			response = new ResponseEntity<>(bookId, HttpStatus.CREATED);
+			ResponseEntity<String> responseFromEmailService = restTemplate.postForEntity(BookConstants.SEND_EMAIL_URL, author.getEmailId(), String.class);
+			log.debug(responseFromEmailService.getBody());
 		}
 		else {
 			response = new ResponseEntity<>(HttpStatus.BAD_REQUEST);

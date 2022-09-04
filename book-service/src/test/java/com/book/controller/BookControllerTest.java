@@ -1,31 +1,27 @@
 package com.book.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import com.book.controller.BookController;
+import org.springframework.web.client.RestTemplate;
+import com.book.constants.BookConstants;
 import com.book.entity.Author;
 import com.book.entity.Book;
 import com.book.service.AuthorService;
 import com.book.service.BookService;
 
 @ExtendWith(MockitoExtension.class)
-class BookControllerTest {
+public class BookControllerTest {
 	@Mock
 	BookService bookService;
 	
@@ -35,10 +31,15 @@ class BookControllerTest {
 	@InjectMocks
 	BookController controller;
 	
+	@Mock
+	RestTemplate restTemplate;
+	
 	Author getAuthor() {
 		Author author = new Author();
 		author.setAuthorId(1);
 		author.setName("David");
+		author.setEmailId("david@gmail.com");
+		author.setUserName("David1");
 		return author;
 	}
 	
@@ -64,8 +65,10 @@ class BookControllerTest {
 		Author author = getAuthor();
 		Book book = getBook();
 		int authorId = 1;
+		ResponseEntity<String> response = new ResponseEntity<String>("email sent", HttpStatus.OK);
 		when(authorService.getAuthor(authorId)).thenReturn(author);
 		when(bookService.saveBook(book)).thenReturn(book);
+		when(restTemplate.postForEntity(BookConstants.SEND_EMAIL_URL, author.getEmailId(), String.class)).thenReturn(response);
 		ResponseEntity<Integer> savedbookId = controller.saveBook(1, book);
 		assertEquals(1, savedbookId.getBody());
 	}
@@ -113,5 +116,21 @@ class BookControllerTest {
 		when(bookService.getBook(bookId)).thenReturn(book);
 		ResponseEntity<Book> actual= controller.getBook(emailId, bookId);
 		assertEquals(HttpStatus.NOT_FOUND, actual.getStatusCode());
+	}
+	
+	@Test
+	void testSaveAuthor() {
+		Author author = getAuthor();
+		when(authorService.saveAuthor(author)).thenReturn(author);
+		ResponseEntity<Integer> savedauthorId = controller.saveAuthor(author);
+		assertEquals(1, savedauthorId.getBody());
+	}
+	
+	@Test
+	void testSaveAuthor1() {
+		Author author = null;
+		when(authorService.saveAuthor(author)).thenReturn(author);
+		ResponseEntity<Integer> savedauthorId = controller.saveAuthor(author);
+		assertEquals(HttpStatus.BAD_REQUEST, savedauthorId.getStatusCode());
 	}
 }

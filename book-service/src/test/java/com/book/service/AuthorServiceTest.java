@@ -29,6 +29,8 @@ public class AuthorServiceTest {
 		Author author = new Author();
 		author.setAuthorId(1);
 		author.setName("David");
+		author.setEmailId("david@gmail.com");
+		author.setUserName("David1");
 		return author;
 	}
 	

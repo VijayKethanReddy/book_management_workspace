@@ -23,7 +23,7 @@ import com.book.service.BookService;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
-class BookServiceTest {
+public class BookServiceTest {
 	
 	@Mock
 	BookRepository bookRepository;
@@ -35,6 +35,8 @@ class BookServiceTest {
 		Author author = new Author();
 		author.setAuthorId(1);
 		author.setName("David");
+		author.setEmailId("david@gmail.com");
+		author.setUserName("David1");
 		return author;
 	}
 	

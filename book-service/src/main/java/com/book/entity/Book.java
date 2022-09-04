@@ -20,8 +20,6 @@ public class Book {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@GeneratedValue(strategy = GenerationType.AUTO, generator="seq")
-	//@GenericGenerator(name = "seq", strategy="increment")
 	private int bookId;
 	
 	@NotBlank(message = "logo cannot be blank#######")
