@@ -8,13 +8,20 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * 
+ * @author cogjava3180
+ * Reader bean is used for declaring the details of reader and validation of reader details
+ *
+ */
+
 @Data
 @Entity
 public class Reader {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int readerId;
+	private int id;
 
 	@NotBlank(message = "name cannot be blank#######")
 	private String name;

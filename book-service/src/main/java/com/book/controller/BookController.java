@@ -1,5 +1,6 @@
 package com.book.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,22 @@ import org.springframework.web.client.RestTemplate;
 import com.book.constants.BookConstants;
 import com.book.entity.Author;
 import com.book.entity.Book;
-import com.book.service.AuthorService;
-import com.book.service.BookService;
+import com.book.service.impl.AuthorServiceImpl;
+import com.book.service.impl.BookServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 
+ * @author cogjava3180
+ * This is BookController which run methods for book api
+ * getBook method is used for fetching book details for book id
+ * searchBooks method is used for fetching all books which match conditions for category, author, price and publisher
+ * saveBook method is used for saving book with author id
+ * saveAuthor method is used for saving author details
+ * 
+ * 
+ *
+ */
 
 @Slf4j
 @RestController
@@ -26,10 +40,10 @@ import lombok.extern.slf4j.Slf4j;
 public class BookController extends BaseController {
 
 	@Autowired
-	BookService bookService;
+	BookServiceImpl bookService;
 	
 	@Autowired
-	AuthorService authorService;
+	AuthorServiceImpl authorService;
 	
 	@Autowired
 	RestTemplate restTemplate;
@@ -50,7 +64,7 @@ public class BookController extends BaseController {
 
 	@GetMapping("/books/search")
 	public ResponseEntity<List<Book>> searchBooks(@RequestParam String category, 
-			@RequestParam String author, @RequestParam int price, 
+			@RequestParam String author, @RequestParam BigDecimal price, 
 			@RequestParam String publisher) {
 		ResponseEntity<List<Book>> response;
 		List<Book> listOfBooks = bookService.searchBooks(category, author, price, publisher);
@@ -65,9 +79,9 @@ public class BookController extends BaseController {
 		if(author!=null) {
 			book.setAuthor(author);
 			bookService.saveBook(book);
-			int bookId = book.getBookId();
+			int bookId = book.getId();
 			response = new ResponseEntity<>(bookId, HttpStatus.CREATED);
-			ResponseEntity<String> responseFromEmailService = restTemplate.postForEntity(BookConstants.SEND_EMAIL_URL, author.getEmailId(), String.class);
+			ResponseEntity<String> responseFromEmailService = restTemplate.postForEntity(BookConstants.SEND_EMAIL_URL, book, String.class);
 			log.debug(responseFromEmailService.getBody());
 		}
 		else {
@@ -81,7 +95,7 @@ public class BookController extends BaseController {
 		ResponseEntity<Integer> response;
 		Author author1 = authorService.saveAuthor(author);
 		if(author1!=null) {
-			int authorId = author1.getAuthorId();
+			int authorId = author1.getId();
 			response = new ResponseEntity<>(authorId, HttpStatus.CREATED);
 		}
 		else {

@@ -8,13 +8,20 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * 
+ * @author cogjava3180
+ * Author bean is used for declaring the details of author and validation of author details
+ *
+ */
+
 @Data
 @Entity
 public class Author {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int authorId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
 	@NotBlank(message = "autherName cannot be blank#######")
 	private String name;

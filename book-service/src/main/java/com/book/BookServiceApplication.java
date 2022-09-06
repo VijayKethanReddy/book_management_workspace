@@ -5,6 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+/**
+ * 
+ * @author cogjava3180
+ * This is BookServiceApplication which will start book service
+ *
+ */
 @EnableEurekaClient
 @SpringBootApplication
 public class BookServiceApplication {

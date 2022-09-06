@@ -8,6 +8,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * 
+ * @author cogjava3180
+ * This is BaseController which is used for the exception handler methods
+ *
+ */
+
 public class BaseController {
 
 	public BaseController() {
@@ -17,7 +24,7 @@ public class BaseController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	Map<String, String> handleException(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
+		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldname = ((FieldError) error).getField();
 			String message = ((FieldError) error).getDefaultMessage();
 			errors.put(fieldname, message);
@@ -28,6 +35,6 @@ public class BaseController {
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Exception.class)
 	void handleOrderNotFound(Exception ex) {
-
+		// Do nothing
 	}
 }
