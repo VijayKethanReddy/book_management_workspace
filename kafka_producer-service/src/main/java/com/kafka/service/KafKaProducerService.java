@@ -7,6 +7,13 @@ import com.kafka.constants.ApplicationConstants;
 import com.kafka.model.Book;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author cogjava3180
+ * This is KafKaProducerService which sends book details to topic name send email
+ *
+ */
+
 @Slf4j
 @Service
 public class KafKaProducerService 

@@ -22,7 +22,7 @@ public class BaseController {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	Map<String, String> handleException(MethodArgumentNotValidException ex) {
+	public Map<String, String> handleException(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<>();
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldname = ((FieldError) error).getField();
@@ -34,7 +34,7 @@ public class BaseController {
 
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Exception.class)
-	void handleOrderNotFound(Exception ex) {
+	public void handleOrderNotFound(Exception ex) {
 		// Do nothing
 	}
 }

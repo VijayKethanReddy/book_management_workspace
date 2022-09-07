@@ -96,15 +96,15 @@ class BookControllerTest {
 	@Test
 	void testSearchBooks() {
 		Book book = getBook();
-		List<Book> books = new ArrayList<>();
-		books.add(book);
+		List<Book> listOfBooks = new ArrayList<>();
+		listOfBooks.add(book);
 		String category="Adventure";
 		String author="David";
 		BigDecimal price= new BigDecimal(1.0);
 		String publisher="ABC Publisher";
-		when(bookService.searchBooks(category, author, price, publisher)).thenReturn(books);
+		when(bookService.searchBooks(category, author, price, publisher)).thenReturn(listOfBooks);
 		ResponseEntity<List<Book>> actual= controller.searchBooks(category, author, price, publisher);
-		assertEquals(books, actual.getBody());
+		assertEquals(listOfBooks, actual.getBody());
 	}
 	
 	@Test
